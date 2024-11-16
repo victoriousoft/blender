@@ -34,9 +34,6 @@ jobs:
                   mkdir -p spritesheets
                   cp -r /tmp/spritesheets/* spritesheets/
 
-            - name: Create an orphan branch
-              run: git checkout --orphan sprites
-
             - name: Commit and push changes
               uses: stefanzweifel/git-auto-commit-action@v5
               with:
