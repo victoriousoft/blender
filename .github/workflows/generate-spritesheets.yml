@@ -34,7 +34,7 @@ jobs:
                   find . -mindepth 1 ! -regex '^\.\/\.git\(/.*\)?' -delete
 
             - name: Copy spritesheets to repository
-              run: cp -r /tmp/spritesheets/*.png .
+              run: cp -r /tmp/spritesheets/* .
 
             - name: Setup Git LFS
               run: |
