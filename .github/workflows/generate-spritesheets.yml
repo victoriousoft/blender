@@ -48,14 +48,23 @@ jobs:
                   name: spritesheets
                   path: tmp/spritesheets
 
+            - name: debug - list files
+              run: ls -la tmp/spritesheets
+
             - name: Copy spritesheets
               run: cp -r tmp/spritesheets/* .
 
-            - name: Push to orphan branch
+            - name: debug - list files
+              run: ls -la
+
+            - name: Checkout orphan branch
               uses: actions/checkout@v4
               with:
                   ref: sprites
                   fetch-depth: 0
+
+            - name: debug - status
+              run: git status
 
             - name: Push to orphan branch
               run: |
