@@ -32,7 +32,7 @@ jobs:
             - name: Copy spritesheets to repository
               run: |
                   mkdir -p spritesheets
-                  cp /tmp/spritesheets/* spritesheets/
+                  cp -r /tmp/spritesheets/* spritesheets/
 
             - name: Commit and push changes
               uses: stefanzweifel/git-auto-commit-action@v5
