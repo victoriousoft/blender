@@ -28,7 +28,7 @@ jobs:
               run: python spritesheet.py
 
             - name: Save artifact
-              uses: actions/upload-artifact@v2
+              uses: actions/upload-artifact@v4
               with:
                   name: spritesheets
                   path: /tmp/spritesheets
