@@ -47,3 +47,4 @@ jobs:
                   branch: sprites
                   file_pattern: "*.png"
                   push_options: --force
+                  skip_checkout: true
