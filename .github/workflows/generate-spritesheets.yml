@@ -29,16 +29,19 @@ jobs:
             - name: Generate spritesheets
               run: python spritesheet.py
 
-            - name: Setup Git LFS
-              run: |
-                  git lfs install
-                  git lfs track "*.png"
-                  git add .gitattributes
+            - name: Clean working directory
+              run: rm -rf !(.git)
 
             - name: Copy spritesheets to repository
               run: |
                   mkdir -p spritesheets
                   cp -r /tmp/spritesheets/* .
+
+            - name: Setup Git LFS
+              run: |
+                  git lfs install
+                  git lfs track "*.png"
+                  git add .gitattributes
 
             - name: Commit and push changes
               uses: stefanzweifel/git-auto-commit-action@v5
@@ -48,3 +51,4 @@ jobs:
                   file_pattern: "*.png"
                   push_options: --force
                   skip_checkout: true
+                  create_branch: true
