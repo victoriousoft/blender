@@ -54,7 +54,7 @@ jobs:
 
             - name: Push to orphan branch
               run: |
-                  git checkout -b sprites
+                  git checkout sprites
                   git add .
                   git commit -m "Add spritesheets"
                   git push origin sprites --force
