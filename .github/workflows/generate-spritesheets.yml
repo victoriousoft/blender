@@ -54,9 +54,6 @@ jobs:
                   ref: sprites
                   fetch-depth: 0
 
-            - name: Copy spritesheets
-              run: cp -r $GITHUB_WORKSPACE/spritesheets/* .
-
             - name: Push to orphan branch
               run: |
                   git checkout sprites
