@@ -9,8 +9,6 @@ on:
 jobs:
     generate-spritesheets:
         runs-on: ubuntu-latest
-        permissions:
-            contents: write
 
         steps:
             - name: Checkout repository
@@ -29,26 +27,34 @@ jobs:
             - name: Generate spritesheets
               run: python spritesheet.py
 
-            - name: Clean working directory
+            - name: Save artifact
+              uses: actions/upload-artifact@v2
+              with:
+                  name: spritesheets
+                  path: /tmp/spritesheets
+
+    commit-spritesheets:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+
+        needs: generate-spritesheets
+
+        steps:
+            - name: DOwnload artifact
+              uses: actions/download-artifact@v2
+              with:
+                  name: spritesheets
+
+            - name: Push to orphan branch
+              uses: actions/checkout@v4
+              with:
+                  ref: sprites
+                  fetch-depth: 0
+
+            - name: Push to orphan branch
               run: |
-                  find . -mindepth 1 ! -regex '^\.\/\.git\(/.*\)?' -delete
-
-            - name: Copy spritesheets to working directory
-              run: cp -r /tmp/spritesheets/* .
-
-            - name: Set up Git LFS
-              run: |
-                  git lfs install
-                  git lfs track "*.png"
-                  git add .gitattributes
-                  git commit -m "Track .png files with Git LFS" || true
-
-            - name: Commit spritesheets to orphan branch
-              run: |
-                  git checkout --orphan sprites
-                  git reset
-                  git add *.png
-                  git commit -m "Update spritesheets"
-
-            - name: Push to sprites branch
-              run: git push --force origin sprites
+                  git checkout -b sprites
+                  git add .
+                  git commit -m "Add spritesheets"
+                  git push origin sprites --force
