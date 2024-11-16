@@ -42,33 +42,20 @@ jobs:
         needs: generate-spritesheets
 
         steps:
-            - name: Download artifact
-              uses: actions/download-artifact@v4
-              with:
-                  name: spritesheets
-                  path: tmp/spritesheets
-
-            - name: debug - list files
-              run: ls -la tmp/spritesheets
-
-            - name: Copy spritesheets
-              run: cp -r tmp/spritesheets/* .
-
-            - name: debug - list files
-              run: ls -la
-
             - name: Checkout orphan branch
               uses: actions/checkout@v4
               with:
                   ref: sprites
                   fetch-depth: 0
 
-            - name: debug - status
-              run: git status
+            - name: Download artifact
+              uses: actions/download-artifact@v4
+              with:
+                  name: spritesheets
+                  path: .
 
             - name: Push to orphan branch
               run: |
-                  git checkout sprites
                   git add .
                   git config --global user.name "[bot] GitHub Actions"
                   git config --global user.email "noreply@github.com"
