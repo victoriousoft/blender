@@ -46,7 +46,10 @@ jobs:
               uses: actions/download-artifact@v4
               with:
                   name: spritesheets
-                  path: ./
+                  path: tmp/spritesheets
+
+            - name: Copy spritesheets
+              run: cp -r tmp/spritesheets/* .
 
             - name: Push to orphan branch
               uses: actions/checkout@v4
