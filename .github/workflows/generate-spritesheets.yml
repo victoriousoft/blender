@@ -30,7 +30,9 @@ jobs:
               run: python spritesheet.py
 
             - name: Clean working directory
-              run: rm -rf !(.git)
+              run: |
+                  find . -maxdepth 1 -type f -not -name '.git' -delete
+                  find . -maxdepth 1 -type d -not -name '.git' -exec rm -r {} +
 
             - name: Copy spritesheets to repository
               run: |
