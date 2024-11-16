@@ -45,6 +45,12 @@ jobs:
                   git lfs track "*.png"
                   git add .gitattributes
 
+            - name: Create orphan branch
+              run: |
+                  git checkout --orphan sprites
+                  git reset --hard
+                  git commit --allow-empty -m "Initial commit for sprites branch"
+
             - name: Commit and push changes
               uses: stefanzweifel/git-auto-commit-action@v5
               with:
