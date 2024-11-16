@@ -18,7 +18,7 @@ jobs:
               with:
                   lfs: true
 
-            - name: Install python
+            - name: Install Python
               uses: actions/setup-python@v5
               with:
                   python-version: 3.12
@@ -33,23 +33,22 @@ jobs:
               run: |
                   find . -mindepth 1 ! -regex '^\.\/\.git\(/.*\)?' -delete
 
-            - name: Copy spritesheets to repository
+            - name: Copy spritesheets to working directory
               run: cp -r /tmp/spritesheets/* .
 
-            - name: Setup Git LFS
+            - name: Set up Git LFS
               run: |
                   git lfs install
                   git lfs track "*.png"
                   git add .gitattributes
+                  git commit -m "Track .png files with Git LFS" || true
 
-            - name: Add spritesheets only
-              run: git add *.png
+            - name: Commit spritesheets to orphan branch
+              run: |
+                  git checkout --orphan sprites
+                  git reset
+                  git add *.png
+                  git commit -m "Update spritesheets"
 
-            - name: Commit and push changes
-              uses: stefanzweifel/git-auto-commit-action@v5
-              with:
-                  commit_message: "Update spritesheets"
-                  branch: sprites
-                  file_pattern: "*.png"
-                  push_options: --force
-                  skip_checkout: true
+            - name: Push to sprites branch
+              run: git push --force origin sprites
