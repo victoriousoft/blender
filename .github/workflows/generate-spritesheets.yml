@@ -32,6 +32,7 @@ jobs:
               with:
                   name: spritesheets
                   path: /tmp/spritesheets
+                  retention-days: 1
 
     commit-spritesheets:
         runs-on: ubuntu-latest
@@ -45,6 +46,7 @@ jobs:
               uses: actions/download-artifact@v4
               with:
                   name: spritesheets
+                  path: "."
 
             - name: Push to orphan branch
               uses: actions/checkout@v4
