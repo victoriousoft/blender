@@ -31,7 +31,7 @@ def compile_spritesheet(files: list[str]) -> Image:
     return spritesheet
 
 def main():
-    files = get_files()
+    all_files = get_files()
 
     if not os.path.exists("/tmp/spritesheets/"):
         os.makedirs("/tmp/spritesheets/")
@@ -40,7 +40,7 @@ def main():
             for file in files:
                 os.remove(os.path.join(root, file))
     
-    for directory, files in files.items():
+    for directory, files in all_files.items():
 
         name = directory.split("/")[-1]
         path = directory.replace(f"/{name}", "").replace("Renders/", "")
