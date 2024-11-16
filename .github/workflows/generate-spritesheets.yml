@@ -32,12 +32,12 @@ jobs:
             - name: Copy spritesheets to repository
               run: |
                   mkdir -p spritesheets
-                  cp -r /tmp/spritesheets/* spritesheets/
+                  cp -r /tmp/spritesheets/* .
 
             - name: Commit and push changes
               uses: stefanzweifel/git-auto-commit-action@v5
               with:
                   commit_message: "Update spritesheets"
                   branch: sprites
-                  file_pattern: spritesheets/**
+                  file_pattern: "*.png"
                   push_options: --force
