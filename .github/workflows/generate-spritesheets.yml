@@ -49,7 +49,9 @@ jobs:
                   fetch-depth: 0
 
             - name: Remove all PNG files with git
-              run: git rm -rf --ignore-unmatch *.png
+              run: |
+                  git rm -rf -- ./*.png 
+                  git clean -fdx -e .gitattributes
 
             - name: Download artifact
               uses: actions/download-artifact@v4
