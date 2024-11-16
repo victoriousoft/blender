@@ -39,5 +39,5 @@ jobs:
               with:
                   commit_message: "Update spritesheets"
                   branch: sprites
-                  file_pattern: spritesheets/*
+                  file_pattern: spritesheets/**
                   push_options: --force
