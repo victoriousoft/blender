@@ -25,7 +25,7 @@ jobs:
               run: pip install -r requirements.txt
 
             - name: Generate spritesheets
-              run: python generate_spritesheets.py
+              run: python spritesheet.py
 
             - name: Copy spritesheets to repository
               run: |
