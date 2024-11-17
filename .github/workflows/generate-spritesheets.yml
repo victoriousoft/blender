@@ -1,0 +1,71 @@
+name: Generate Spritesheets
+
+on:
+    push:
+        branches:
+            - main
+    workflow_dispatch:
+
+jobs:
+    generate-spritesheets:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+              with:
+                  lfs: true
+
+            - name: Install Python
+              uses: actions/setup-python@v5
+              with:
+                  python-version: 3.12
+
+            - name: Install dependencies
+              run: pip install -r requirements.txt
+
+            - name: Generate spritesheets
+              run: python spritesheet.py
+
+            - name: Save artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: spritesheets
+                  path: /tmp/spritesheets
+                  retention-days: 1
+
+    commit-spritesheets:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+
+        needs: generate-spritesheets
+
+        steps:
+            - name: Checkout orphan branch
+              uses: actions/checkout@v4
+              with:
+                  ref: sprites
+                  fetch-depth: 0
+
+            - name: Remove all PNG files with git
+              run: |
+                  git rm -rf .
+                  git clean -fdx
+
+            - name: Creaty .gitattributes file
+              run: echo "*.png filter=lfs diff=lfs merge=lfs -text" > .gitattributes
+
+            - name: Download artifact
+              uses: actions/download-artifact@v4
+              with:
+                  name: spritesheets
+                  path: .
+
+            - name: Push to orphan branch
+              run: |
+                  git add .
+                  git config --global user.name "[bot] GitHub Actions"
+                  git config --global user.email "noreply@github.com"
+                  git commit -m "Add spritesheets"
+                  git push origin sprites --force
