@@ -35,7 +35,7 @@ jobs:
 
             - name: Configure Minio Alias
               run: |
-                  mc alias set minio https://minio.kristn.co.uk:9000 \
+                  mc alias set minio http://minio.kristn.co.uk:9000 \
                     ${{ secrets.MINIO_ACCESS_KEY }} \
                     ${{ secrets.MINIO_SECRET_KEY }}
 
