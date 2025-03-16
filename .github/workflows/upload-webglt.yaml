@@ -5,6 +5,8 @@ on:
         paths:
             - "**.blend"
 
+    workflow_dispatch:
+
 jobs:
     export_gltf:
         runs-on: ubuntu-latest
