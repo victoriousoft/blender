@@ -30,17 +30,14 @@ jobs:
               with:
                   python-version: "3.13"
 
-            - name: Install Minio Client
-              run: |
-                  curl -sL https://dl.min.io/client/mc/release/linux-amd64/mc \
-                  -o /usr/local/bin/mc && chmod +x /usr/local/bin/mc
+            - name: Setup Minio Client
+              uses: hostwithquantum/setup-mc@main
 
             - name: Configure Minio Alias
-              env:
-                  MINIO_ACCESS_KEY: ${{ secrets.MINIO_ACCESS_KEY }}
-                  MINIO_SECRET_KEY: ${{ secrets.MINIO_SECRET_KEY }}
               run: |
-                  mc alias set minio https://minio.kristn.co.uk $MINIO_ACCESS_KEY $MINIO_SECRET_KEY
+                  mc alias set minio https://minio.kristn.co.uk \
+                    ${{ secrets.MINIO_ACCESS_KEY }} \
+                    ${{ secrets.MINIO_SECRET_KEY }}
 
             - name: Run compile script
               run: |
