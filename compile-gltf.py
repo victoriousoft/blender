@@ -60,6 +60,8 @@ for tower in towers_paths:
 
 print([str(tower) for tower in towers])
 
+os.makedirs("./output", exist_ok=True)
+
 for tower in towers:
     print(f"Generating {tower}")
     tower.generate_gltf()
