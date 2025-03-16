@@ -1,0 +1,49 @@
+name: Export GLTF from Blender
+
+on:
+    push:
+        paths:
+            - "**.blend"
+
+jobs:
+    export_gltf:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v3
+
+            - name: Pull LFS
+              run: |
+                  git lfs install
+                  git lfs pull
+
+            - name: Install Blender
+              run: |
+                  sudo apt update
+                  sudo apt install blender -y
+
+            - name: Setup Python
+              uses: actions/setup-python@v5
+              with:
+                  python-version: "3.13"
+
+            - name: Install Minio Client
+              run: |
+                  curl -sL https://dl.min.io/client/mc/release/linux-amd64/mc \
+                  -o /usr/local/bin/mc && chmod +x /usr/local/bin/mc
+
+            - name: Configure Minio Alias
+              env:
+                  MINIO_ACCESS_KEY: ${{ secrets.MINIO_ACCESS_KEY }}
+                  MINIO_SECRET_KEY: ${{ secrets.MINIO_SECRET_KEY }}
+              run: |
+                  mc alias set minio https://minio.kristn.co.uk $MINIO_ACCESS_KEY $MINIO_SECRET_KEY
+
+            - name: Run compile script
+              run: |
+                  python3 compile-gltf.py
+
+            - name: Upload compiled models
+              run: |
+                  mc cp --recursive ./output/ minio/ratartd-models/
