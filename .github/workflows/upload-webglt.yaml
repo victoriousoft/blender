@@ -51,6 +51,9 @@ jobs:
             - name: Run compile script
               run: |
                   python3 compile-gltf.py
+            - name: Remove all existing models
+              run: |
+                  mc rm --recursive minio/ratartd-models/ || true
 
             - name: Upload compiled models
               run: |
