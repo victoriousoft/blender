@@ -35,6 +35,7 @@ for obj in bpy.data.objects: \
             if mod.type == 'MIRROR': \
                 bpy.context.view_layer.objects.active = obj; \
                 bpy.ops.object.modifier_apply(modifier=mod.name); \
+bpy.context.scene.render.engine = 'BLENDER_EEVEE'; \
 bpy.ops.export_scene.gltf(filepath='{output_name}', export_animations=False)\"")
     
     def find_blend_file(self):
