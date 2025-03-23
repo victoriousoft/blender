@@ -21,7 +21,15 @@ jobs:
               run: |
                   git lfs pull
 
+            - name: Cache Blender installation
+              uses: actions/cache@v3
+              id: blender-cache
+              with:
+                  path: /usr/bin/blender
+                  key: ${{ runner.os }}-blender-${{ hashFiles('**/apt-sources.list') }}
+
             - name: Install Blender
+              if: steps.blender-cache.outputs.cache-hit != 'true'
               run: |
                   sudo apt update
                   sudo apt install blender -y
