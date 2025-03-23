@@ -28,7 +28,14 @@ class TowerModel:
         else:
             output_name = f"./output/{self.name}_{self.level}.gltf"
         
-        os.system(f"blender -b {blend_path} --python-expr \"import bpy; bpy.ops.export_scene.gltf(filepath='{output_name}', export_animations=False)\"")
+        os.system(f"blender -b {blend_path} --python-expr \"import bpy; bpy.ops.wm.open_mainfile(filepath='{blend_path}'); \
+for obj in bpy.data.objects: \
+    if obj.type == 'MESH': \
+        for mod in obj.modifiers: \
+            if mod.type == 'MIRROR': \
+                bpy.context.view_layer.objects.active = obj; \
+                bpy.ops.object.modifier_apply(modifier=mod.name); \
+bpy.ops.export_scene.gltf(filepath='{output_name}', export_animations=False)\"")
     
     def find_blend_file(self):
         blend_files = [f for f in os.listdir(self.directory) if f.endswith(".blend")]
