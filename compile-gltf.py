@@ -29,26 +29,30 @@ class TowerModel:
             output_name = f"./output/{self.name}.gltf"
         else:
             output_name = f"./output/{self.name}_{self.level}.gltf"
-        
+
+        script_content = f"""
+import bpy
+bpy.ops.wm.open_mainfile(filepath='{blend_path}')
+for obj in bpy.data.objects:
+    if obj.type == 'MESH':
+        for mod in obj.modifiers:
+            if mod.type == 'MIRROR':
+                bpy.context.view_layer.objects.active = obj
+                bpy.ops.object.modifier_apply(modifier=mod.name)
+bpy.context.scene.render.engine = 'BLENDER_EEVEE'
+bpy.ops.export_scene.gltf(filepath='{output_name}', export_animations=False)
+"""
+
+        script_path = "./apply_modifiers_and_export.py"
+        with open(script_path, "w") as script_file:
+            script_file.write(script_content)
+
         try:
-            python_expr = (
-            "import bpy; "
-            f"bpy.ops.wm.open_mainfile(filepath='{blend_path}'); "
-            "for obj in bpy.data.objects: "
-            "    if obj.type == 'MESH': "
-            "        for mod in obj.modifiers: "
-            "            if mod.type == 'MIRROR': "
-            "                bpy.context.view_layer.objects.active = obj; "
-            "                bpy.ops.object.modifier_apply(modifier=mod.name); "
-            "bpy.context.scene.render.engine = 'BLENDER_EEVEE'; "
-            f"bpy.ops.export_scene.gltf(filepath='{output_name}', export_animations=False)"
-            )
-            
-            exit_code = os.system(f'blender -b {blend_path} --python-expr "{python_expr}"')
+            exit_code = os.system(f"blender -b --python {script_path}")
             if exit_code != 0:
                 print(f"Error processing {self.name}")
                 sys.exit(1)
-                
+
         except Exception as e:
             print(f"Exception: {e}")
             sys.exit(1)
