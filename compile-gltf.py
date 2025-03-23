@@ -1,4 +1,6 @@
 import os
+import sys
+import sys
 
 class TowerModel:
     directory: str
@@ -28,15 +30,22 @@ class TowerModel:
         else:
             output_name = f"./output/{self.name}_{self.level}.gltf"
         
-        os.system(f"blender -b {blend_path} --python-expr \"import bpy; bpy.ops.wm.open_mainfile(filepath='{blend_path}'); \
-for obj in bpy.data.objects: \
-    if obj.type == 'MESH': \
+        try:
+            exit_code = os.system(f"blender -b {blend_path} --python-expr \"import bpy; bpy.ops.wm.open_mainfile(filepath='{blend_path}'); \
+    for obj in bpy.data.objects: \
+        if obj.type == 'MESH': \
         for mod in obj.modifiers: \
             if mod.type == 'MIRROR': \
-                bpy.context.view_layer.objects.active = obj; \
-                bpy.ops.object.modifier_apply(modifier=mod.name); \
-bpy.context.scene.render.engine = 'BLENDER_EEVEE'; \
-bpy.ops.export_scene.gltf(filepath='{output_name}', export_animations=False)\"")
+            bpy.context.view_layer.objects.active = obj; \
+            bpy.ops.object.modifier_apply(modifier=mod.name); \
+    bpy.context.scene.render.engine = 'BLENDER_EEVEE'; \
+    bpy.ops.export_scene.gltf(filepath='{output_name}', export_animations=False)\"")
+            if exit_code != 0:
+                print(f"Error processing {self.name}")
+                sys.exit(1)
+        except Exception as e:
+            print(f"Exception: {e}")
+            sys.exit(1)
     
     def find_blend_file(self):
         blend_files = [f for f in os.listdir(self.directory) if f.endswith(".blend")]
