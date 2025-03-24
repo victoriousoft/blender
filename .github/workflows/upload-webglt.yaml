@@ -1,9 +1,9 @@
 name: Export GLTF from Blender
 
 on:
-    push:
-        paths:
-            - "**.blend"
+#    push:
+#        paths:
+#            - "**.blend"
 
     workflow_dispatch:
 
