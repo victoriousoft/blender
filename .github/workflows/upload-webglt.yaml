@@ -17,9 +17,9 @@ jobs:
               with:
                   lfs: true
 
-            - name: Pull LFS
+            - name: Pull LFS files from Towers directory
               run: |
-                  git lfs pull
+                  git lfs pull --include="Towers/*"
 
             - name: Install Blender
               run: |
