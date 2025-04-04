@@ -1,9 +1,9 @@
 name: Export GLTF from Blender
 
 on:
-#    push:
-#        paths:
-#            - "**.blend"
+    #    push:
+    #        paths:
+    #            - "**.blend"
 
     workflow_dispatch:
 
@@ -14,8 +14,6 @@ jobs:
         steps:
             - name: Checkout repository
               uses: actions/checkout@v4
-              with:
-                  lfs: true
 
             - name: Pull LFS files from Towers directory
               run: |
