@@ -73,7 +73,6 @@ for tower in towers_paths:
     tower_files = os.listdir(f"Towers/{tower}")
 
     level_paths = [f for f in tower_files if f.startswith("Level")]
-    # ignore "Troops" directory
     evolution_paths = [f for f in tower_files if f not in level_paths and not f.startswith("Troop")]
 
     for path in level_paths:
